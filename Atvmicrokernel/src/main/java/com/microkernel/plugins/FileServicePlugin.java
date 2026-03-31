@@ -1,32 +1,24 @@
 package com.microkernel.plugins;
 
 import com.microkernel.core.Plugin;
-import java.util.Map;
 
 public class FileServicePlugin implements Plugin {
 
     @Override
     public String getName() {
-        return "file";
+        return "File Service";
     }
 
     @Override
-    public String handle(String action, Map<String, String> params) {
-        return switch (action) {
-            case "read" -> {
-                String filename = params.getOrDefault("filename", "?");
-                yield "[FileService] Lendo arquivo: " + filename;
-            }
-            case "write" -> {
-                String filename = params.getOrDefault("filename", "?");
-                String content  = params.getOrDefault("content", "");
-                yield "[FileService] Escrevendo em '" + filename + "': " + content;
-            }
-            case "delete" -> {
-                String filename = params.getOrDefault("filename", "?");
-                yield "[FileService] Arquivo deletado: " + filename;
-            }
-            default -> "[FileService] Ação desconhecida: " + action;
-        };
+    public void execute() {
+        System.out.println("Manipulando arquivos...\n");
     }
+    @Override
+    public void onEvent(String event) {
+        
+    if (event.equals("FILE_UPLOAD")) {
+        System.out.println("[File] Arquivo processado!");
+    }
+}
+    
 }

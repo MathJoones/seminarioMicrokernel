@@ -1,38 +1,39 @@
 package com.microkernel.core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Microkernel {
 
-    private final Map<String, Plugin> plugins = new HashMap<>();
+    private List<Plugin> plugins = new ArrayList<>();
 
-    //Gerenciamento de plug-ins
     public void registerPlugin(Plugin plugin) {
-        plugins.put(plugin.getName(), plugin);
-        System.out.println("[Kernel] Plug-in registrado: '" + plugin.getName() + "'");
+        plugins.add(plugin);
+        System.out.println("Plugin registrado: " + plugin.getName());
     }
 
-    public void unregisterPlugin(String name) {
-        if (plugins.remove(name) != null) {
+    public void executePlugins() {
+        for (Plugin plugin : plugins) {
+            System.out.println("Executando: " + plugin.getName() + "\n");
+            plugin.execute();
+        }
+    }
+
+    
+    /*public void unregisterPlugin(String name) {
+        if (plugins.remove(name) != false) {
             System.out.println("[Kernel] Plug-in removido: '" + name + "'");
         } else {
-            System.out.println("[Kernel] AVISO: plug-in '" + name + "' não estava registrado.");
+            System.out.println("[Kernel] AVISO: plug-in '" + name +  "' não estava registrado.");
         }
-    }
+    }*/
 
-    public boolean hasPlugin(String name) {
-        return plugins.containsKey(name);
-    }
+    //sistema de eventos
+    public void notifyEvent(String event) {
+        System.out.println("\n[Kernel] Disparando evento: " + event);
 
-    //IPC — Passa msg
-    public String sendMessage(String pluginName, String action, Map<String, String> params) {
-        Plugin plugin = plugins.get(pluginName);
-
-        if (plugin == null) {
-            return "[Kernel] ERRO: plug-in '" + pluginName + "' não encontrado.";
+        for (Plugin plugin : plugins) {
+            plugin.onEvent(event);
         }
-
-        return plugin.handle(action, params);
     }
 }
