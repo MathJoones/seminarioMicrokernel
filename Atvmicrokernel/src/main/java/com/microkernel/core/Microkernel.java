@@ -19,21 +19,28 @@ public class Microkernel {
         }
     }
 
-    
-    /*public void unregisterPlugin(String name) {
-        if (plugins.remove(name) != false) {
+    //removendo plugin
+    public void unregisterPlugin(String name) {
+        boolean remove = plugins.removeIf(p -> p.getName().equals(name));
+        if (remove) {
             System.out.println("[Kernel] Plug-in removido: '" + name + "'");
         } else {
             System.out.println("[Kernel] AVISO: plug-in '" + name +  "' não estava registrado.");
         }
-    }*/
+    }
 
     //sistema de eventos
     public void notifyEvent(String event) {
         System.out.println("\n[Kernel] Disparando evento: " + event);
 
         for (Plugin plugin : plugins) {
-            plugin.onEvent(event);
+            try {
+                
+                plugin.onEvent(event);
+            } catch (Exception e ){
+                System.out.println("[Kernel] ERRO em " + plugin.getName()
+                        + " ao processar '" + event + "': " + e.getMessage());
+            }
         }
     }
 }

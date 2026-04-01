@@ -20,8 +20,8 @@ public class Main {
         kernel.notifyEvent("FILE_UPLOAD");
         System.out.println("Negócio chato de mexer\n");
 
-        /*kernel.unregisterPlugin("auth");
-        System.out.println("Plugin removido com sucesso");*/
+        kernel.unregisterPlugin("auth");
+        System.out.println("Plugin removido com sucesso");
 
         
     }
